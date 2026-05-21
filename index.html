@@ -74,7 +74,6 @@ body{
     object-fit:contain;
     object-position:center;
 
-    /* Обрізає нижню тінь PNG, але не заважає танку виходити за рамки віджета */
     clip-path:inset(0 0 28px 0);
 
     filter:
@@ -85,7 +84,6 @@ body{
     opacity:.98;
 }
 
-/* М'яка тінь під самим танком всередині блоку */
 .tank-box::after{
     content:"";
     position:absolute;
@@ -379,6 +377,18 @@ function formatNumber(num){
     return Math.round(num).toLocaleString("uk-UA");
 }
 
+function isRealBattleRow(row){
+    if(!row || row.length < 8) return false;
+
+    const battleNumber = String(row[0] || "").trim();
+    const dateTime = String(row[1] || "").trim();
+    const player = String(row[2] || "").trim();
+    const tank = String(row[3] || "").trim();
+    const result = String(row[7] || "").trim();
+
+    return battleNumber !== "" && dateTime !== "" && player !== "" && tank !== "" && result !== "";
+}
+
 async function loadMainData(){
     try{
         const response = await fetch(CSV_URL_MAIN + "&_=" + Date.now(), {
@@ -400,12 +410,15 @@ async function loadMainData(){
         for(let i = 1; i < rows.length; i++){
             const row = rows[i];
 
-            if(!row || row.length < 8) continue;
+            if(!isRealBattleRow(row)) continue;
 
             const damage = toNumber(row[4]);
             const result = row[7] || "";
 
-            if(damage <= 0) continue;
+            // ВАЖЛИВО:
+            // Бій з 0 дамагу теж рахується як бій.
+            // Тому тут НЕ можна робити:
+            // if(damage <= 0) continue;
 
             battleCount++;
             totalDamage += damage;
