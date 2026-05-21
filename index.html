@@ -2,7 +2,6 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FV4005 Stage II Max Damage Widget</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -28,7 +27,7 @@ body{
     overflow:hidden;
 }
 
-/* === ОСНОВНИЙ ВІДЖЕТ === */
+/* === ОСНОВНИЙ ВІДЖЕТ — ФІКСОВАНИЙ РОЗМІР === */
 .widget{
     width:960px;
     height:520px;
@@ -56,7 +55,7 @@ body{
 /* === КАРТИНКА ТАНКА ПОВЕРХ ТЕКСТУ === */
 .tank-box{
     position:absolute;
-    right:-90px;
+    right:-70px;
     top:42px;
     width:760px;
     height:332px;
@@ -68,8 +67,8 @@ body{
 }
 
 .tank-image{
-    width:100%;
-    height:100%;
+    width:110%;
+    height:110%;
     object-fit:contain;
     object-position:center;
     filter:
@@ -182,7 +181,7 @@ body{
 .best-shot-value{
     margin-top:5px;
     margin-left:34px;
-    font-size:2.55rem;
+    font-size:3.55rem;
     font-weight:1000;
     line-height:1;
     color:#ffe07a;
@@ -234,40 +233,6 @@ body{
     text-transform:uppercase;
     text-shadow:0 1px 4px rgba(0,0,0,.22);
 }
-
-@media (max-width:980px){
-    .widget{
-        width:940px;
-        height:510px;
-    }
-
-    .tank-box{
-        right:-118px;
-        top:48px;
-        width:720px;
-        height:314px;
-    }
-
-    .tank-title{
-        font-size:3.3rem;
-    }
-
-    .max-damage{
-        font-size:6.4rem;
-    }
-
-    .best-shot-value{
-        font-size:2.35rem;
-    }
-
-    .label{
-        font-size:1.3rem;
-    }
-
-    .best-shot-box{
-        margin-left:18px;
-    }
-}
 </style>
 </head>
 
@@ -291,7 +256,7 @@ body{
         <div class="main-info">
             <div class="label">
                 <span class="sword-icon">⚔️</span>
-                <span>Максимальний дамаг за бій</span>
+                <span>Максимальний дамаг</span>
             </div>
 
             <div class="max-damage" id="maxDamage">0</div>
@@ -471,7 +436,7 @@ async function loadBestShot(){
         });
 
         if(!response.ok){
-            throw new Error("Не вдалося отримати D2 з YKP2");
+            throw new Error("Не вдалося отримати значення найкращого пострілу");
         }
 
         const text = await response.text();
